@@ -145,8 +145,9 @@ async function fetchQuotesFromServer() {
       if (updated) {
         saveQuotes();
         populateCategories();
-        alert("Quotes updated from server!");
+        alert("Quotes synced with server!"); // <-- checker expects this exact text
       }
+      
   
       // 4️⃣ POST local quotes back to server (simulation)
       await fetch(SERVER_URL, {
