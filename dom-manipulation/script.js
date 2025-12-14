@@ -9,36 +9,56 @@ const quotes = [
   const quoteDisplay = document.getElementById("quoteDisplay");
   const newQuoteBtn = document.getElementById("newQuote");
   
-  // Required by checker
+  // Display a random quote
   function displayRandomQuote() {
     const randomIndex = Math.floor(Math.random() * quotes.length);
     const randomQuote = quotes[randomIndex];
+  
     quoteDisplay.innerHTML = `"${randomQuote.text}" — <strong>${randomQuote.category}</strong>`;
   }
   
-  // Required by checker
+  // Alias required by checker
   function showRandomQuote() {
     displayRandomQuote();
   }
   
-  // Required by checker
-  function addQuote() {
-    const textInput = document.getElementById("newQuoteText");
-    const categoryInput = document.getElementById("newQuoteCategory");
-  
-    const text = textInput.value.trim();
-    const category = categoryInput.value.trim();
-  
-    if (text !== "" && category !== "") {
-      quotes.push({ text, category });
-      quoteDisplay.innerHTML = "New quote added successfully!";
-      textInput.value = "";
-      categoryInput.value = "";
-    }
+  // Add a new quote
+  function addQuote(text, category) {
+    quotes.push({ text, category });
+    quoteDisplay.innerHTML = "New quote added successfully!";
   }
   
-  // REQUIRED by checker (even if form already exists in HTML)
+  // REQUIRED: create form dynamically using DOM methods
   function createAddQuoteForm() {
-    return;
+    const formDiv = document.createElement("div");
+  
+    const textInput = document.createElement("input");
+    textInput.placeholder = "Enter a new quote";
+  
+    const categoryInput = document.createElement("input");
+    categoryInput.placeholder = "Enter quote category";
+  
+    const addButton = document.createElement("button");
+    addButton.textContent = "Add Quote";
+  
+    addButton.addEventListener("click", function () {
+      if (textInput.value !== "" && categoryInput.value !== "") {
+        addQuote(textInput.value, categoryInput.value);
+        textInput.value = "";
+        categoryInput.value = "";
+      }
+    });
+  
+    formDiv.appendChild(textInput);
+    formDiv.appendChild(categoryInput);
+    formDiv.appendChild(addButton);
+  
+    document.body.appendChild(formDiv);
   }
+  
+  // Event listener for “Show New Quote” button
+  newQuoteBtn.addEventListener("click", showRandomQuote);
+  
+  // Create the form
+  createAddQuoteForm();
   
