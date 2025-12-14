@@ -1,0 +1,22 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    margin: 20px;
+  }
+  
+  #quoteDisplay {
+    margin: 20px 0;
+    font-size: 1.2rem;
+    font-weight: bold;
+  }
+  
+  input {
+    padding: 5px;
+    margin: 5px;
+  }
+  
+  button {
+    padding: 5px 10px;
+    cursor: pointer;
+  }
+  
