@@ -128,8 +128,10 @@ async function fetchQuotesFromServer() {
   
   async function syncQuotes() {
     try {
+      // 1️⃣ Fetch server quotes
       const serverQuotes = await fetchQuotesFromServer();
   
+      // 2️⃣ Simple conflict resolution: add missing server quotes
       let updated = false;
       serverQuotes.forEach(sq => {
         const exists = quotes.find(q => q.text === sq.text && q.category === sq.category);
@@ -139,26 +141,32 @@ async function fetchQuotesFromServer() {
         }
       });
   
+      // 3️⃣ Save local storage if updated
       if (updated) {
         saveQuotes();
         populateCategories();
         alert("Quotes updated from server!");
       }
   
+      // 4️⃣ POST local quotes back to server (simulation)
+      await fetch(SERVER_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(quotes)
+      });
+  
     } catch (error) {
       console.error("Error syncing quotes:", error);
     }
   }
   
-
-setInterval(syncWithServer, 30000); // auto sync every 30s
+  setInterval(syncQuotes, 30000); // auto sync
 
 // --- Event Listeners ---
 newQuoteBtn.addEventListener("click", showRandomQuote);
 
 const syncBtn = document.getElementById("syncBtn");
-if (syncBtn) syncBtn.addEventListener("click", syncWithServer);
-
+if (syncBtn) syncBtn.addEventListener("click", syncQuotes);
 // --- Initialize ---
 createAddQuoteForm();
 populateCategories();
