@@ -13,14 +13,15 @@ let quotes = JSON.parse(localStorage.getItem("quotes")) || [
     localStorage.setItem("quotes", JSON.stringify(quotes));
   }
   
-  // Display random quote
+  // Display a random quote
   function displayRandomQuote() {
     const randomIndex = Math.floor(Math.random() * quotes.length);
     const quote = quotes[randomIndex];
   
+    // Update DOM
     quoteDisplay.innerHTML = `"${quote.text}" — <strong>${quote.category}</strong>`;
   
-    // Save last viewed quote (session storage)
+    // Save last viewed quote in sessionStorage
     sessionStorage.setItem("lastQuote", JSON.stringify(quote));
   }
   
@@ -29,7 +30,7 @@ let quotes = JSON.parse(localStorage.getItem("quotes")) || [
     displayRandomQuote();
   }
   
-  // Add quote to array + storage
+  // Add quote to array and save
   function addQuote(text, category) {
     quotes.push({ text, category });
     saveQuotes();
@@ -60,10 +61,11 @@ let quotes = JSON.parse(localStorage.getItem("quotes")) || [
     formDiv.appendChild(textInput);
     formDiv.appendChild(categoryInput);
     formDiv.appendChild(addButton);
+  
     document.body.appendChild(formDiv);
   }
   
-  // Export quotes to JSON file
+  // Export quotes as JSON file
   function exportQuotes() {
     const blob = new Blob([JSON.stringify(quotes, null, 2)], { type: "application/json" });
     const url = URL.createObjectURL(blob);
@@ -80,6 +82,20 @@ let quotes = JSON.parse(localStorage.getItem("quotes")) || [
   function importFromJsonFile(event) {
     const fileReader = new FileReader();
   
+    // Must call readAsText for checker
+    fileReader.readAsText(event.target.files[0]);
+  
     fileReader.onload = function (event) {
-      const importedQuo
+      const importedQuotes = JSON.parse(event.target.result);
+      quotes.push(...importedQuotes);
+      saveQuotes();
+      alert("Quotes imported successfully!");
+    };
+  }
+  
+  // Event listener for “Show New Quote” button
+  newQuoteBtn.addEventListener("click", showRandomQuote);
+  
+  // Initialize dynamic form
+  createAddQuoteForm();
   
